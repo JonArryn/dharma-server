@@ -1,0 +1,11 @@
+{
+  "name": "dharma-server",
+  "version": "1.0.0",
+  "description": "backend for dharma library",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC"
+}
