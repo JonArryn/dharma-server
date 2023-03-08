@@ -9,3 +9,28 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @unique
+  firstname String
+  lastname String
+  email String? @unique
+}
+
+model Library {
+  id Int @id @default(autoincrement())
+  name String
+  address String
+}
+
+model Country {
+  id Int @id @default(autoincrement())
+  name String
+  abbreviation_2 String
+  abbreviation_3 String
+}
+
+model Country_Division {
+  id Int @id @default(autoincrement())
+}
