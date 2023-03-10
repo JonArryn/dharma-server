@@ -30,11 +30,10 @@ const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
 const app = (0, express_1.default)();
 dotenv.config();
-const port = process.env.PORT || 5000;
+const port = 5000;
 app.get('/', (req, res) => {
     res.json({ greeting: 'Hello world!' });
 });
 app.listen(port, () => {
     console.log(`🚀 server started at http://localhost:${port}`);
 });
-//# sourceMappingURL=server.js.map
