@@ -11,26 +11,99 @@ datasource db {
 }
 
 model User {
+  @@map(name: "user")
   id Int @id @default(autoincrement())
   username String @unique
-  firstname String
-  lastname String
+  first_name String
+  last_name String
   email String? @unique
+  is_admin Boolean @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime? 
+  Checkout Checkout[]
 }
 
 model Library {
+  @@map(name: "library")
   id Int @id @default(autoincrement())
   name String
-  address String
+  address String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+}
+
+model Book {
+  @@map(name: "book")
+  id Int @id @default(autoincrement())
+  title String
+  author Author @relation(fields: [author_id], references: [id])
+  author_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+}
+
+model Author {
+  @@map(name: "author")
+  id Int @id @default(autoincrement())
+  first_name String
+  middle_name String?
+  last_name String
+  Book Book[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+}
+
+model Checkout {
+  @@map(name: "checkout")
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [user_id], references:[id])
+  user_id Int
+  checkout_date DateTime @default(now())
 }
 
 model Country {
+  @@map(name: "country")
   id Int @id @default(autoincrement())
   name String
-  abbreviation_2 String
-  abbreviation_3 String
+  abbreviation_2 String @db.VarChar(2)
+  abbreviation_3 String @db.VarChar(3)
+  CountryDivision CountryDivision[]
+  Address Address[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
 }
 
-model Country_Division {
+model CountryDivision {
+  @@map(name: "countrydivision")
   id Int @id @default(autoincrement())
+  name String
+  abbreviation_2 String @db.VarChar(2)
+  abbreviation_3 String @db.VarChar(3)
+  country Country @relation(fields: [country_id], references: [id])
+  country_id Int
+  Address Address []
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+}
+
+model Address {
+  @@map(name: "address")
+  id Int @id @default(autoincrement())
+  line_1 String
+  line_2 String?
+  line_3 String?
+  country Country @relation(fields: [country_id], references: [id])
+  country_id Int
+  country_division CountryDivision @relation(fields: [country_division_id], references: [id])
+  country_division_id Int
+  postal_code String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
 }
