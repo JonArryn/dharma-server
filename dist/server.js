@@ -30,7 +30,7 @@ const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
 const app = (0, express_1.default)();
 dotenv.config();
-const port = 5000;
+const port = process.env.PORT || 8081;
 app.get('/', (req, res) => {
     res.json({ greeting: 'Hello world!' });
 });
