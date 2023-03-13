@@ -31,7 +31,7 @@ const dotenv = __importStar(require("dotenv"));
 const app = (0, express_1.default)();
 dotenv.config();
 const port = process.env.PORT || 8081;
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.json({ greeting: 'Hello world!' });
 });
 app.listen(port, () => {
