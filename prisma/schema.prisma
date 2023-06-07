@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  @@map(name: "user")
+  id Int @id @default(autoincrement())
+  username String @unique
+  first_name String?
+  last_name String?
+  email String @unique
+  password String
+  password_confirm String
+  is_admin Boolean? @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime? 
+  Checkout Checkout[]
+}
+
+model Library {
+  @@map(name: "library")
+  id Int @id @default(autoincrement())
+  name String
+  address Address @relation(fields: [address_id], references: [id])
+  address_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+}
+
+model Book {
+  @@map(name: "book")
+  id Int @id @default(autoincrement())
+  title String
+  author Author @relation(fields: [author_id], references: [id])
+  author_id Int
+  Checkout Checkout[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+}
+
+model Author {
+  @@map(name: "author")
+  id Int @id @default(autoincrement())
+  first_name String
+  middle_name String?
+  last_name String
+  Book Book[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+}
+
+model Checkout {
+  @@map(name: "checkout")
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [user_id], references:[id])
+  user_id Int
+  book Book @relation(fields: [book_id], references: [id])
+  book_id Int
+  checkout_date DateTime @default(now())
+}
+
+model Country {
+  @@map(name: "country")
+  id Int @id @default(autoincrement())
+  name String
+  abbreviation_2 String @db.VarChar(2)
+  abbreviation_3 String @db.VarChar(3)
+  CountryDivision Countrydivision[]
+  Address Address[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+}
+
+model Countrydivision {
+  @@map(name: "countrydivision")
+  id Int @id @default(autoincrement())
+  name String
+  postal_abbreviation String @db.VarChar(2)
+  country Country @relation(fields: [country_id], references: [id])
+  country_id Int
+  Address Address []
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+}
+
+model Address {
+  @@map(name: "address")
+  id Int @id @default(autoincrement())
+  line_1 String
+  line_2 String?
+  line_3 String?
+  country Country @relation(fields: [country_id], references: [id])
+  country_id Int
+  country_division Countrydivision @relation(fields: [country_division_id], references: [id])
+  country_division_id Int
+  postal_code String?
+  Library Library[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+}
